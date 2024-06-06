@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "chatter"
+version = "1.0.0"
+description = "Chatter transcribes text"
+authors = ["Dj Isaac <contact@dejaydev.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+sanic = "^23.12.1"
+faster-whisper = "^1.0.2"
+ruff = "^0.4.6"
+uvloop = "^0.19.0"
+sanic-ext = "^23.12.0"
+python-dotenv = "^1.0.1"
+cachetools = "^5.3.3"
+
+[tool.poe.tasks]
+dev = "sanic chatter.app -r --debug" # The --dev flag is broken for us.
+start = "sanic chatter.app"
+
+[tool.ruff]
+line-length = 320 # This is the maximum for Ruff
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
