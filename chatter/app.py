@@ -1,22 +1,26 @@
-from faster_whisper import WhisperModel
-from sanic import Request, Sanic, text, json
-from sanic.log import logger
 import os
-from io import BytesIO
-import requests
 import re
-from sanic_ext import validate
-from chatter.models.transcription import TranscriptionRequest
-from dotenv import load_dotenv
-from cachetools import TTLCache
+from io import BytesIO
 from uuid import UUID
+
+import requests
+from cachetools import TTLCache
+from dotenv import load_dotenv
+from faster_whisper import WhisperModel
+from sanic import Request, Sanic, json, text
+from sanic_ext import validate
+
+from chatter.models.transcription import TranscriptionRequest
 
 load_dotenv()
 
 URL_REGEX = re.compile(r"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)")
 
 app = Sanic("Chatter")
-app.config.OAS = False  # OpenAPI Spec is enabled by default by sanic_ext. This way is more effective than the documented OAS_AUTODOC setting.
+
+# OpenAPI Spec is enabled for Sanic apps when you import sanic_ext.
+# There is a documented `OAS_AUTODOC` setting, but this one turns off the extension entirely.
+app.config.OAS = False
 
 jobs = TTLCache(maxsize=100, ttl=60)
 
@@ -30,11 +34,6 @@ async def require_auth(request: Request):
 @app.get("/")
 async def index(request: Request):
     return text("Hello World")
-
-
-@app.get("/dev")
-async def jobs_req(request: Request):
-    return text(str(jobs))
 
 
 @app.get("/job/<id:uuid>")
@@ -74,7 +73,7 @@ async def transcribe(request: Request, body: TranscriptionRequest):
         segments, info = model.transcribe(
             content,
             best_of=5,  # default
-            beam_size=5,  # default
+            beam_size=5,  # default, should also be defined as OMP_NUM_THREADS
             patience=1,  # default
         )
     except:  # noqa: E722

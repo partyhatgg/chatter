@@ -1,0 +1,5 @@
+services:
+    bot:
+      build: .
+      ports: 
+        - '3010:8000'

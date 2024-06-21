@@ -5,12 +5,13 @@ description = "Chatter transcribes text"
 authors = ["Dj Isaac <contact@dejaydev.com>"]
 license = "MIT"
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
 sanic = "^23.12.1"
 faster-whisper = "^1.0.2"
-ruff = "^0.4.6"
+ruff = "^0.4.10"
 uvloop = "^0.19.0"
 sanic-ext = "^23.12.0"
 python-dotenv = "^1.0.1"
