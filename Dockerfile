@@ -42,4 +42,5 @@ WORKDIR /chatter
 
 EXPOSE 8000
 
-CMD ["sanic", "chatter.app"]
+#CMD ["ls"]
+CMD ["python", "-m", "chatter.app"]

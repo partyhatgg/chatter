@@ -92,7 +92,7 @@ async def transcribe(request: Request, body: TranscriptionRequest):
     return json({"id": id})
 
 
-def start():
+if __name__ == "__main__":
     IS_DEV = True if os.getenv("DEBUG") == "1" else False
     app.run(
         host="0.0.0.0",
